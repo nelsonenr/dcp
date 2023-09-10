@@ -28,7 +28,7 @@ class Node:
         self.right = right
 
 
-def bar(queue: deque) -> Node:
+def bar(queue):
     val = queue.popleft()
     if val == '\t':
         return None
@@ -39,12 +39,12 @@ def bar(queue: deque) -> Node:
         return node
 
 
-def deserialize(code: str) -> Node:
-    l = code.split('/')
+def deserialize(s):
+    l = s.split('/')
     return bar(deque(l))
 
 
-def foo(node: Node, queue: deque):
+def foo(node, queue):
     if node is None:        
         queue.append('\t')
     else:
@@ -53,7 +53,7 @@ def foo(node: Node, queue: deque):
         foo(node.right, queue)
 
 
-def serialize(root: Node) -> str:
+def serialize(root):
     queue = deque([])
     foo(root, queue)
     return '/'.join(queue)
