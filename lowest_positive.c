@@ -11,29 +11,44 @@
  * You can modify the input array in-place.
  */
 #include <stdio.h>
-#include <limits.h>
+
+static void swap(register int *a, register int *b)
+{
+	int c;
+
+	c = *a;
+	*a = *b;
+	*b = c;
+}
 
 int foo(int arr[], unsigned size)
 {
-	int i;
+	unsigned i;
+	int min = 0;
 
 	for (i = 0; i < size; ++i) {
-		if (arr[i] <= 0)
-			arr[i] = INT_MAX;
+		if (arr[i] > 0) {
+			min = arr[i];
+			break;
+		}
 	}
 
-	for (i = size - 2; i >= 0; --i) {
-		if (arr[i] > arr[i + 1])
-			arr[i] = arr[i + 1];
+	for (++i; i < size; ++i) {
+		if (arr[i] > 0 && arr[i] < min)
+			min = arr[i];
 	}
 
-	if (arr[0] > 1)
+	if (min != 1)
 		return 1;
 
-	for (i = 1; i < size; ++i) {
-		if (arr[i] - arr[i - 1] > 1)
-			break;
+	for (i = 0; i < size; ++i) {
+		while (0 < arr[i] && arr[i] <= size && 
+				arr[arr[i] - 1] != arr[i])
+			swap(arr + (arr[i] - 1), arr + i);
 	}
+
+	for (i = 0; i < size && arr[i] - 1 == i; ++i)
+		;
 
 	return arr[i - 1] + 1;
 }
