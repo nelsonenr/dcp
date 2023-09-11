@@ -11,9 +11,31 @@
  * You can modify the input array in-place.
  */
 #include <stdio.h>
+#include <limits.h>
 
 int foo(int arr[], unsigned size)
 {
+	int i;
+
+	for (i = 0; i < size; ++i) {
+		if (arr[i] <= 0)
+			arr[i] = INT_MAX;
+	}
+
+	for (i = size - 2; i >= 0; --i) {
+		if (arr[i] > arr[i + 1])
+			arr[i] = arr[i + 1];
+	}
+
+	if (arr[0] > 1)
+		return 1;
+
+	for (i = 1; i < size; ++i) {
+		if (arr[i] - arr[i - 1] > 1)
+			break;
+	}
+
+	return arr[i - 1] + 1;
 }
 
 int main(void)
